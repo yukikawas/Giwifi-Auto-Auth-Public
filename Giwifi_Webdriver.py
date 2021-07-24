@@ -15,7 +15,7 @@ phone = 'your phone'
 pwd = 'your pwd'
 
 
-def GwifiAuth():
+def gwifi_auth():
     options = Options()
     options.headless = True
 
@@ -43,9 +43,9 @@ def GwifiAuth():
 
 def writelog(info):
     times = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    LogFile = open('GwifiAuth.log', 'a')
-    LogFile.write(times + ' ' + info + '\r\n')
-    LogFile.close()
+    log_file = open('GwifiAuth.log', 'a')
+    log_file.write(times + ' ' + info + '\r\n')
+    log_file.close()
 
 
 while True:
@@ -55,9 +55,9 @@ while True:
         pattern = re.compile("STATUS OK")
         if pattern.search(loginPage) == None:
             writelog('Auth lost, try to re-Auth')
-            GwifiAuth()
+            gwifi_auth()
             print('reconnected')
-            writelog('Auth commpleted!')
+            writelog('Auth completed!')
         else:
             writelog('Already connected')
     except:
