@@ -54,6 +54,8 @@ coverage.xml
 # Translations
 *.mo
 *.pot
+#pwd private file
+*.pwd
 
 # Django stuff:
 *.log
