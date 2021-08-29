@@ -7,6 +7,7 @@ import requests
 import re
 import json
 import time
+import logfly
 
 global phone, pwd
 
@@ -35,13 +36,6 @@ def gwifi_auth(phone, pwd):
     print("All Done")
 
 
-def writelog(info):
-    times = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    log_file = open('GwifiAuth.log', 'a')
-    log_file.write(times + ' ' + info + '\r\n')
-    log_file.close()
-
-
 def get_info():
     try:
         file = open('config.pwd', 'r')
@@ -67,7 +61,7 @@ def get_info():
     return phone, pwd
 
 
-while True:  # TODO use daemon instead of while true
+while True:
     phone = get_info()[0]
     pwd = get_info()[1]
 
@@ -76,11 +70,11 @@ while True:  # TODO use daemon instead of while true
         time.sleep(10)
         pattern = re.compile("STATUS OK")
         if pattern.search(loginPage) == None:
-            writelog('Auth lost, try to re-Auth')
+            logfly.write_log('auth', 'fileCLI', 'error', 'Auth lost, try to re-Auth')
             gwifi_auth(phone, pwd)
             print('reconnected')
-            writelog('Auth completed!')
+            logfly.write_log('auth', 'fileCLI', 'warning', 'Auth Commpleted!')
         else:
-            writelog('Already connected')
+            logfly.write_log('auth', 'file', 'info', 'Already connected!')
     except:
         pass
